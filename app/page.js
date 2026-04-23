@@ -60,14 +60,14 @@ const QuickStats = () => {
         {stats.map((stat, idx) => (
           <div
             key={idx}
-            className="bg-neutral-900/80 backdrop-blur-lg border border-neutral-800 p-6 rounded-xl shadow-xl hover:border-red-500/50 transition-colors group relative overflow-hidden"
+            className="bg-neutral-900/80 backdrop-blur-lg border border-neutral-800 p-6 rounded-xl shadow-xl hover:border-red-500/50 transition-colors duration-200 group relative overflow-hidden"
           >
             {/* Background Kanji Watermark */}
-            <div className="absolute -right-4 -bottom-4 text-6xl font-black text-neutral-800/30 group-hover:text-red-900/20 transition-colors select-none pointer-events-none z-0">
+            <div className="absolute -right-4 -bottom-4 text-6xl font-black text-neutral-800/30 group-hover:text-red-900/20 transition-colors duration-200 select-none pointer-events-none z-0">
               {stat.jp}
             </div>
 
-            <div className="text-red-500 mb-4 group-hover:scale-110 transition-transform origin-left relative z-10">
+            <div className="text-red-500 mb-4 group-hover:scale-110 transition-transform duration-200 origin-left relative z-10">
               {stat.icon}
             </div>
             <div className="flex items-center gap-2 mb-1 relative z-10">
@@ -144,7 +144,7 @@ const VehicleShowcase = () => {
           {vehicles.map((car) => (
             <div
               key={car.id}
-              className="bg-neutral-900/50 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors backdrop-blur-sm shadow-xl shadow-none"
+              className="bg-neutral-900/50 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors duration-300 backdrop-blur-sm shadow-xl shadow-none"
             >
               <div className="relative h-64 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent z-10 transition-colors duration-300"></div>
@@ -153,7 +153,7 @@ const VehicleShowcase = () => {
                   alt={car.model}
                   width={400}
                   height={400}
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-all duration-700 opacity-90 group-hover:opacity-100"
                 />
                 <div className="absolute top-4 left-4 z-20 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-widest shadow-lg shadow-red-900/50">
                   {car.role}
@@ -174,7 +174,7 @@ const VehicleShowcase = () => {
                 <p className="text-neutral-400 leading-relaxed mb-6">
                   {car.desc}
                 </p>
-                <button className="text-white font-semibold flex items-center gap-2 group-hover:text-red-400 transition-colors">
+                <button className="text-white font-semibold flex items-center gap-2 group-hover:text-red-400 transition-all duration-300">
                   View Specs <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

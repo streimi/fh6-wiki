@@ -22,9 +22,9 @@ const AboutSection = () => {
               width={400}
               height={400}
               alt="Japanese Mountain Roads"
-              className="w-full h-auto object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-700"
+              className="w-full h-auto object-cover rounded-2xl transform scale-110 group-hover:scale-100 transition-transform duration-700"
             />
-            <div className="absolute bottom-4 left-4 z-20 bg-neutral-950/90 backdrop-blur px-4 py-2 rounded-lg border border-red-500/30 flex items-center gap-3">
+            <div className="absolute bottom-4 left-4 z-20 bg-neutral-950/90 backdrop-blur px-4 py-2 rounded-lg border border-red-500/30 flex items-center gap-3 group-hover:scale-90 duration-700">
               <span className="text-red-500 font-bold text-sm tracking-widest uppercase">
                 Touge Routes
               </span>

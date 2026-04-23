@@ -1,17 +1,13 @@
 "use client";
 import Link from "next/link";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Search,
-  Menu,
-  X,
-  Sun,
-  Moon,
   Filter,
   Gauge,
   Settings2,
-  Zap,
   ChevronDown,
+  FlipHorizontal2,
 } from "lucide-react";
 
 // ============================================================================
@@ -68,8 +64,7 @@ const carsData = [
     pi: 999,
     drivetrain: "placeholder_drivetrain",
     type: "placeholder_type",
-    image:
-      "/img/car_thumbs/McLaren_P1_GTR.webp",
+    image: "/img/car_thumbs/McLaren_P1_GTR.webp",
   },
 ];
 
@@ -90,11 +85,9 @@ const classColors = {
 const PageHeader = () => {
   return (
     <div className="relative pt-32 pb-16 overflow-hidden border-b border-neutral-200 dark:border-neutral-900">
-      {/* Massive background Kanji */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12rem] md:text-[18rem] font-black text-neutral-100 dark:text-neutral-900/40 pointer-events-none select-none z-0 whitespace-nowrap transition-colors duration-300">
         車両一覧
       </div>
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p className="text-red-600 dark:text-red-500 font-bold tracking-[0.4em] mb-3 text-sm">
           車両データベース
@@ -116,119 +109,228 @@ const PageHeader = () => {
 };
 
 // ============================================================================
-// BLOCK 3: Modal Component
+// BLOCK 3: Flippable Car Card Component
 // ============================================================================
 
-const CarDetailsModal = ({ car, onClose }) => {
-  if (!car) return null;
+const CarCard = ({ car }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
 
-  // Generate some realistic-looking relative stats for the UI based on the PI
   const speed = Math.min(10, car.pi / 100 + 0.8).toFixed(1);
   const handling = Math.min(10, car.pi / 100 + 1.2).toFixed(1);
   const acceleration = Math.min(10, car.pi / 100 + 1.5).toFixed(1);
   const braking = Math.min(10, car.pi / 100 + 0.9).toFixed(1);
 
+  const stats = [
+    { label: "Speed", value: speed },
+    { label: "Handling", value: handling },
+    { label: "Accel", value: acceleration },
+    { label: "Braking", value: braking },
+  ];
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+    <div
+      className="cursor-pointer"
+      style={{
+        perspective: "1200px",
+        height: "420px",
+        willChange: "transform",
+        transform: "translateZ(0)",
+      }}
+      onClick={() => setIsFlipped((f) => !f)}
+    >
       <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      ></div>
-
-      <div className="relative bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-neutral-200 dark:border-neutral-800 shadow-2xl flex flex-col md:flex-row animate-in fade-in zoom-in-95 duration-200">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors backdrop-blur-md"
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          transformStyle: "preserve-3d",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            transformStyle: "preserve-3d",
+            transition: "transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1)",
+            transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+            willChange: "transform",
+          }}
         >
-          <X className="w-5 h-5" />
-        </button>
-
-        {/* Image Side */}
-        <div className="w-full md:w-1/2 h-64 md:h-auto relative shrink-0">
-          <img
-            src={car.image}
-            alt={car.model}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-neutral-900/90 md:from-transparent to-transparent"></div>
-
-          <div className="absolute bottom-6 left-6 flex items-center gap-3">
-            <div
-              className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-black text-2xl shadow-lg border-2 border-white/20 ${classColors[car.class]}`}
-            >
-              {car.class}
+          {/* ── FRONT FACE ── */}
+          <div
+            className="bg-white dark:bg-neutral-900/40 rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 group hover:border-red-500/50 dark:hover:border-red-500/50 transition-colors duration-300 hover:shadow-xl hover:shadow-red-500/5 relative"
+            style={{
+              position: "absolute",
+              inset: 0,
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: "translateZ(0)",
+              outline: "1px solid transparent",
+            }}
+          >
+            {/* Background Watermark */}
+            <div className="absolute -right-4 -bottom-6 text-[6rem] font-black text-neutral-100 dark:text-neutral-800/30 group-hover:text-neutral-200 dark:group-hover:text-red-900/10 transition-colors pointer-events-none select-none z-0">
+              {car.jpMake}
             </div>
-            <span className="text-white font-bold text-4xl tracking-widest drop-shadow-md">
-              {car.pi}
-            </span>
-          </div>
-        </div>
 
-        {/* Content Side */}
-        <div className="w-full md:w-1/2 p-8 flex flex-col">
-          <p className="text-red-600 dark:text-red-500 font-bold tracking-widest uppercase mb-1 flex items-center gap-2">
-            {car.year} • {car.make}
-          </p>
-          <h2 className="text-3xl font-black text-neutral-900 dark:text-white mb-1 leading-tight">
-            {car.model}
-          </h2>
-          <p className="text-neutral-400 dark:text-neutral-500 text-sm font-bold tracking-[0.2em] mb-8">
-            {car.jpMake}
-          </p>
-
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-neutral-100 dark:bg-neutral-950 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 flex items-center gap-3">
-              <Settings2 className="w-6 h-6 text-neutral-400" />
-              <div>
-                <p className="text-[10px] text-neutral-500 uppercase tracking-wider font-bold">
-                  Drivetrain
-                </p>
-                <p className="font-bold text-neutral-900 dark:text-white">
-                  {car.drivetrain}
-                </p>
-              </div>
-            </div>
-            <div className="bg-neutral-100 dark:bg-neutral-950 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 flex items-center gap-3">
-              <Gauge className="w-6 h-6 text-neutral-400" />
-              <div>
-                <p className="text-[10px] text-neutral-500 uppercase tracking-wider font-bold">
-                  Category
-                </p>
-                <p className="font-bold text-neutral-900 dark:text-white line-clamp-1">
-                  {car.type}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <h3 className="text-sm font-bold text-neutral-900 dark:text-white mb-4 border-b border-neutral-200 dark:border-neutral-800 pb-2 uppercase tracking-widest">
-            Performance
-          </h3>
-
-          <div className="space-y-4">
-            {[
-              { label: "Speed", value: speed },
-              { label: "Handling", value: handling },
-              { label: "Acceleration", value: acceleration },
-              { label: "Braking", value: braking },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="flex justify-between text-xs font-bold mb-1.5 uppercase tracking-wider">
-                  <span className="text-neutral-500 dark:text-neutral-400">
-                    {stat.label}
-                  </span>
-                  <span className="text-neutral-900 dark:text-white">
-                    {stat.value}
-                  </span>
+            {/* Image Section */}
+            <div className="relative h-56 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent opacity-80 z-10" />
+              <img
+                src={car.image}
+                alt={`${car.make} ${car.model}`}
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+              />
+              {/* Class Badge */}
+              <div className="absolute top-4 left-4 z-20 flex items-center gap-1 bg-neutral-950/80 backdrop-blur-sm pr-3 rounded-full border border-neutral-700/50 shadow-lg">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm ${classColors[car.class] ?? "bg-neutral-600"}`}
+                >
+                  {car.class}
                 </div>
-                <div className="h-1.5 w-full bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                <span className="text-white font-bold text-sm tracking-widest pl-1">
+                  {car.pi}
+                </span>
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="p-6 relative z-10">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <p className="text-red-600 dark:text-red-500 font-bold text-xs tracking-widest uppercase mb-1">
+                    {car.year} • {car.make}
+                  </p>
+                  <h3 className="text-xl font-bold text-neutral-900 dark:text-white leading-tight">
+                    {car.model}
+                  </h3>
+                </div>
+                <span className="text-neutral-400 dark:text-neutral-600 text-[10px] font-bold tracking-[0.2em]">
+                  {car.jpMake}
+                </span>
+              </div>
+
+              <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-6">
+                {car.type}
+              </p>
+
+              {/* Specs Footer */}
+              <div className="pt-4 border-t border-neutral-100 dark:border-neutral-800 flex justify-between items-center">
+                <div className="flex gap-4">
                   <div
-                    className="h-full bg-red-600 dark:bg-red-500 rounded-full transition-all duration-1000 ease-out"
-                    style={{ width: `${(stat.value / 10) * 100}%` }}
-                  ></div>
+                    className="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400"
+                    title="Drivetrain"
+                  >
+                    <Settings2 className="w-4 h-4" />
+                    <span className="text-sm font-semibold">
+                      {car.drivetrain}
+                    </span>
+                  </div>
+                </div>
+                {/* Flip hint button */}
+                <div className="flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500 text-sm font-bold uppercase tracking-wider select-none">
+                  <FlipHorizontal2 className="w-4 h-4" />
+                  Flip
                 </div>
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* ── BACK FACE ── */}
+          <div
+            className="bg-white dark:bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 relative flex flex-col"
+            style={{
+              position: "absolute",
+              inset: 0,
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: "rotateY(180deg) translateZ(0)",
+              outline: "1px solid transparent",
+            }}
+          >
+            {/* Top accent strip */}
+            <div className="h-1.5 w-full bg-gradient-to-r from-red-600 to-red-400 shrink-0" />
+
+            <div className="flex flex-col flex-grow p-6 overflow-hidden">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-5">
+                <div>
+                  <p className="text-red-600 dark:text-red-500 font-bold text-xs tracking-widest uppercase mb-0.5">
+                    {car.year} • {car.make}
+                  </p>
+                  <h3 className="text-xl font-black text-neutral-900 dark:text-white leading-tight">
+                    {car.model}
+                  </h3>
+                  <p className="text-neutral-400 dark:text-neutral-500 text-xs font-bold tracking-[0.2em] mt-0.5">
+                    {car.jpMake}
+                  </p>
+                </div>
+                <div
+                  className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-lg shadow-md shrink-0 ${classColors[car.class] ?? "bg-neutral-600"}`}
+                >
+                  {car.class}
+                </div>
+              </div>
+
+              {/* Quick specs */}
+              <div className="grid grid-cols-2 gap-3 mb-5">
+                <div className="bg-neutral-100 dark:bg-neutral-950 p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 flex items-center gap-2">
+                  <Settings2 className="w-4 h-4 text-neutral-400 shrink-0" />
+                  <div>
+                    <p className="text-[9px] text-neutral-500 uppercase tracking-wider font-bold">
+                      Drivetrain
+                    </p>
+                    <p className="font-bold text-sm text-neutral-900 dark:text-white">
+                      {car.drivetrain}
+                    </p>
+                  </div>
+                </div>
+                <div className="bg-neutral-100 dark:bg-neutral-950 p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 flex items-center gap-2">
+                  <Gauge className="w-4 h-4 text-neutral-400 shrink-0" />
+                  <div>
+                    <p className="text-[9px] text-neutral-500 uppercase tracking-wider font-bold">
+                      Category
+                    </p>
+                    <p className="font-bold text-sm text-neutral-900 dark:text-white line-clamp-1">
+                      {car.type}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Performance bars */}
+              <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-3 border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                Performance
+              </p>
+              <div className="space-y-3 flex-grow">
+                {stats.map((stat) => (
+                  <div key={stat.label}>
+                    <div className="flex justify-between text-[10px] font-bold mb-1 uppercase tracking-wider">
+                      <span className="text-neutral-500 dark:text-neutral-400">
+                        {stat.label}
+                      </span>
+                      <span className="text-neutral-900 dark:text-white">
+                        {stat.value}
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-red-600 dark:bg-red-500 rounded-full"
+                        style={{ width: `${(stat.value / 10) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Back flip hint */}
+              <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex justify-end">
+                <div className="flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500 text-sm font-bold uppercase tracking-wider select-none">
+                  <FlipHorizontal2 className="w-4 h-4" />
+                  Flip
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -244,7 +346,6 @@ const VehicleDatabase = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClass, setSelectedClass] = useState("All");
   const [selectedMake, setSelectedMake] = useState("All");
-  const [selectedCar, setSelectedCar] = useState(null);
 
   const classes = ["All", "X", "S2", "S1", "A", "B", "C", "D"];
   const makes = ["All", ...new Set(carsData.map((car) => car.make))].sort();
@@ -257,22 +358,9 @@ const VehicleDatabase = () => {
       const matchesClass =
         selectedClass === "All" || car.class === selectedClass;
       const matchesMake = selectedMake === "All" || car.make === selectedMake;
-
       return matchesSearch && matchesClass && matchesMake;
     });
   }, [searchQuery, selectedClass, selectedMake]);
-
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (selectedCar) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [selectedCar]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-screen">
@@ -349,79 +437,7 @@ const VehicleDatabase = () => {
       {filteredCars.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCars.map((car) => (
-            <div
-              key={car.id}
-              className="bg-white dark:bg-neutral-900/40 rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 group hover:border-red-500/50 dark:hover:border-red-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/5 dark:hover:shadow-none relative"
-            >
-              {/* Background Watermark */}
-              <div className="absolute -right-4 -bottom-6 text-[6rem] font-black text-neutral-100 dark:text-neutral-800/30 group-hover:text-neutral-200 dark:group-hover:text-red-900/10 transition-colors pointer-events-none select-none z-0">
-                {car.jpMake}
-              </div>
-
-              {/* Image Section */}
-              <div className="relative h-56 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent opacity-80 z-10"></div>
-                <img
-                  src={car.image}
-                  alt={`${car.make} ${car.model}`}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                />
-
-                {/* Class Badge */}
-                <div className="absolute top-4 left-4 z-20 flex items-center gap-1 bg-neutral-950/80 backdrop-blur-sm pr-3 rounded-full border border-neutral-700/50 shadow-lg">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm ${classColors[car.class]}`}
-                  >
-                    {car.class}
-                  </div>
-                  <span className="text-white font-bold text-sm tracking-widest pl-1">
-                    {car.pi}
-                  </span>
-                </div>
-              </div>
-
-              {/* Content Section */}
-              <div className="p-6 relative z-10">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <p className="text-red-600 dark:text-red-500 font-bold text-xs tracking-widest uppercase mb-1">
-                      {car.year} • {car.make}
-                    </p>
-                    <h3 className="text-xl font-bold text-neutral-900 dark:text-white leading-tight">
-                      {car.model}
-                    </h3>
-                  </div>
-                  <span className="text-neutral-400 dark:text-neutral-600 text-[10px] font-bold tracking-[0.2em]">
-                    {car.jpMake}
-                  </span>
-                </div>
-
-                <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-6">
-                  {car.type}
-                </p>
-
-                {/* Specs Footer */}
-                <div className="pt-4 border-t border-neutral-100 dark:border-neutral-800 flex justify-between items-center">
-                  <div className="flex gap-4">
-                    <div
-                      className="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400"
-                      title="Drivetrain"
-                    >
-                      <Settings2 className="w-4 h-4" />
-                      <span className="text-sm font-semibold">
-                        {car.drivetrain}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setSelectedCar(car)}
-                    className="text-sm font-bold text-neutral-900 dark:text-white hover:text-red-600 dark:hover:text-red-400 transition-colors uppercase tracking-wider py-1"
-                  >
-                    Details
-                  </button>
-                </div>
-              </div>
-            </div>
+            <CarCard key={car.id} car={car} />
           ))}
         </div>
       ) : (
@@ -437,13 +453,9 @@ const VehicleDatabase = () => {
           </p>
         </div>
       )}
-
-      {/* Render the details modal if a car is selected */}
-      <CarDetailsModal car={selectedCar} onClose={() => setSelectedCar(null)} />
     </div>
   );
 };
-
 
 // ============================================================================
 // MAIN PAGE COMPONENT (Export)
