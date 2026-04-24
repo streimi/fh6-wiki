@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   Filter,
@@ -113,7 +114,7 @@ const PageHeader = () => {
 // ============================================================================
 
 const CarCard = ({ car }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [showStats, setShowStats] = useState(false);
 
   const speed = Math.min(10, car.pi / 100 + 0.8).toFixed(1);
   const handling = Math.min(10, car.pi / 100 + 1.2).toFixed(1);
@@ -129,211 +130,139 @@ const CarCard = ({ car }) => {
 
   return (
     <div
-      className="cursor-pointer"
-      style={{
-        perspective: "1200px",
-        height: "420px",
-        willChange: "transform",
-        transform: "translateZ(0)",
-      }}
-      onClick={() => setIsFlipped((f) => !f)}
+      className="cursor-pointer h-[420px]"
+      onClick={() => setShowStats((s) => !s)}
     >
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100%",
-          transformStyle: "preserve-3d",
-        }}
+      <motion.div
+        layout
+        className="bg-neutral-900/40 hover:bg-neutral-900/90 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors duration-300 hover:shadow-xl hover:shadow-red-500/5 relative"
       >
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            transformStyle: "preserve-3d",
-            transition: "transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1)",
-            transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-            willChange: "transform",
-          }}
+        {/* IMAGE */}
+        <motion.div
+          layout
+          className="relative overflow-hidden"
+          animate={{ height: showStats ? 65 : 224 }}
+          transition={{ type: "spring", stiffness: 120, damping: 18 }}
         >
-          {/* ── FRONT FACE ── */}
-          <div
-            className="bg-neutral-900/40 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors duration-300 hover:shadow-xl hover:shadow-red-500/5 relative"
-            style={{
-              position: "absolute",
-              inset: 0,
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-              transform: "translateZ(0)",
-              outline: "1px solid transparent",
-            }}
-          >
-            {/* Background Watermark */}
-            <div className="absolute -right-4 -bottom-6 text-[6rem] font-black text-neutral-800/30 group-hover:text-red-900/10 transition-colors pointer-events-none select-none z-0">
-              {car.jpMake}
-            </div>
+          {/* Gradient overlay */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent z-10"
+            animate={{ opacity: showStats ? 0.9 : 0.7 }}
+          />
 
-            {/* Image Section */}
-            <div className="relative h-56 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent opacity-80 z-10" />
-              <img
-                src={car.image}
-                alt={`${car.make} ${car.model}`}
-                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-              />
-              {/* Class Badge */}
-              <div className="absolute top-4 left-4 z-20 flex items-center gap-1 bg-neutral-950/80 backdrop-blur-sm pr-3 rounded-full border border-neutral-700/50 shadow-lg">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm ${classColors[car.class] ?? "bg-neutral-600"}`}
-                >
-                  {car.class}
-                </div>
-                <span className="text-white font-bold text-sm tracking-widest pl-1">
-                  {car.pi}
-                </span>
-              </div>
-            </div>
+          {/* Image */}
+          <motion.img
+            src={car.image}
+            alt={`${car.make} ${car.model}`}
+            className="w-full h-full object-cover"
+            animate={{ scale: showStats ? 1.05 : 1 }}
+            transition={{ duration: 0.6 }}
+          />
 
-            {/* Content Section */}
-            <div className="p-6 relative z-10">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <p className="text-red-500 font-bold text-xs tracking-widest uppercase mb-1">
-                    {car.year} • {car.make}
-                  </p>
-                  <h3 className="text-xl font-bold text-white leading-tight">
-                    {car.model}
-                  </h3>
-                </div>
-                <span className="text-neutral-600 text-[10px] font-bold tracking-[0.2em]">
-                  {car.jpMake}
-                </span>
-              </div>
-
-              <p className="text-neutral-400 text-sm mb-6">
-                {car.type}
-              </p>
-
-              {/* Specs Footer */}
-              <div className="pt-4 border-t border-neutral-800 flex justify-between items-center">
-                <div className="flex gap-4">
-                  <div
-                    className="flex items-center gap-1.5 text-neutral-400"
-                    title="Drivetrain"
-                  >
-                    <Settings2 className="w-4 h-4" />
-                    <span className="text-sm font-semibold">
-                      {car.drivetrain}
-                    </span>
-                  </div>
-                </div>
-                {/* Flip hint button */}
-                <div className="flex items-center gap-1.5 text-neutral-500 text-sm font-bold uppercase tracking-wider select-none">
-                  <FlipHorizontal2 className="w-4 h-4" />
-                  Flip
-                </div>
-              </div>
+          {/* Class badge */}
+          <div className="absolute top-4 right-4 z-20 flex items-center gap-1 bg-neutral-950/80 backdrop-blur-sm pl-3 rounded-full border border-neutral-700/50 shadow-lg">
+            <span className="text-white font-bold text-sm tracking-widest pr-1">
+              {car.pi}
+            </span>
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm ${classColors[car.class] ?? "bg-neutral-600"}`}
+            >
+              {car.class}
             </div>
           </div>
+        </motion.div>
 
-          {/* ── BACK FACE ── */}
-          <div
-            className="bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-800 relative flex flex-col"
-            style={{
-              position: "absolute",
-              inset: 0,
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-              transform: "rotateY(180deg) translateZ(0)",
-              outline: "1px solid transparent",
-            }}
-          >
-            {/* Top accent strip */}
-            <div className="h-1.5 w-full bg-gradient-to-r from-red-600 to-red-400 shrink-0" />
+        {/* CONTENT */}
+        <motion.div layout className="p-6 flex flex-col flex-grow relative">
+          {/* Watermark */}
+          <div className="absolute -right-4 -bottom-6 text-[6rem] font-black text-neutral-800/30 group-hover:text-red-900/10 transition-colors pointer-events-none select-none z-0">
+            {car.jpMake}
+          </div>
 
-            <div className="flex flex-col flex-grow p-6 overflow-hidden">
-              {/* Header */}
-              <div className="flex items-start justify-between mb-5">
-                <div>
-                  <p className="text-red-500 font-bold text-xs tracking-widest uppercase mb-0.5">
-                    {car.year} • {car.make}
-                  </p>
-                  <h3 className="text-xl font-black text-white leading-tight">
-                    {car.model}
-                  </h3>
-                  <p className="text-neutral-500 text-xs font-bold tracking-[0.2em] mt-0.5">
-                    {car.jpMake}
-                  </p>
-                </div>
-                <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-lg shadow-md shrink-0 ${classColors[car.class] ?? "bg-neutral-600"}`}
-                >
-                  {car.class}
-                </div>
+          {/* HEADER */}
+          <motion.div layout transition={{ layout: { duration: 0.4 } }}>
+            <div className="flex justify-between items-start mb-2">
+              <div>
+                <p className="text-red-500 font-bold text-xs tracking-widest uppercase mb-1">
+                  {car.year} • {car.make}
+                </p>
+                <h3 className="text-xl font-bold text-white leading-tight">
+                  {car.model}
+                </h3>
               </div>
+              <span className="text-neutral-600 text-[10px] font-bold tracking-[0.2em]">
+                {car.jpMake}
+              </span>
+            </div>
 
-              {/* Quick specs */}
-              <div className="grid grid-cols-2 gap-3 mb-5">
-                <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex items-center gap-2">
-                  <Settings2 className="w-4 h-4 text-neutral-400 shrink-0" />
-                  <div>
-                    <p className="text-[9px] text-neutral-500 uppercase tracking-wider font-bold">
-                      Drivetrain
-                    </p>
-                    <p className="font-bold text-sm text-white">
-                      {car.drivetrain}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex items-center gap-2">
-                  <Gauge className="w-4 h-4 text-neutral-400 shrink-0" />
-                  <div>
-                    <p className="text-[9px] text-neutral-500 uppercase tracking-wider font-bold">
-                      Category
-                    </p>
-                    <p className="font-bold text-sm text-white line-clamp-1">
-                      {car.type}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <p className="text-neutral-400 text-sm mb-3">{car.type}</p>
+          </motion.div>
 
-              {/* Performance bars */}
-              <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-3 border-b border-neutral-200 dark:border-neutral-800 pb-2">
-                Performance
-              </p>
-              <div className="space-y-3 flex-grow">
-                {stats.map((stat) => (
-                  <div key={stat.label}>
+          {/* STATS */}
+          <AnimatePresence mode="wait">
+            {showStats && (
+              <motion.div
+                key="stats"
+                layout
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 15 }}
+                transition={{
+                  opacity: { duration: 0.25 },
+                  y: { duration: 0.25 },
+                  layout: { duration: 0.4 },
+                }}
+                className="space-y-3 mb-4"
+              >
+                <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest border-b border-neutral-800 pb-2">
+                  Performance
+                </p>
+
+                {stats.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 5 }}
+                    transition={{ delay: i * 0.04 }}
+                  >
                     <div className="flex justify-between text-[10px] font-bold mb-1 uppercase tracking-wider">
-                      <span className="text-neutral-500 dark:text-neutral-400">
-                        {stat.label}
-                      </span>
-                      <span className="text-neutral-900 dark:text-white">
-                        {stat.value}
-                      </span>
+                      <span className="text-neutral-400">{stat.label}</span>
+                      <span className="text-white">{stat.value}</span>
                     </div>
-                    <div className="h-1.5 w-full bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-red-600 dark:bg-red-500 rounded-full"
-                        style={{ width: `${(stat.value / 10) * 100}%` }}
+
+                    <div className="h-1.5 w-full bg-neutral-800 rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-red-500 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(stat.value / 10) * 100}%` }}
+                        exit={{ width: 0 }} // 👈 THIS makes it feel smooth on collapse
+                        transition={{ duration: 0.4 }}
                       />
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-              {/* Back flip hint */}
-              <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800 flex justify-end">
-                <div className="flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500 text-sm font-bold uppercase tracking-wider select-none">
-                  <FlipHorizontal2 className="w-4 h-4" />
-                  Flip
-                </div>
-              </div>
+          {/* FOOTER */}
+          <motion.div
+            layout
+            className="mt-auto pt-4 border-t border-neutral-800 flex justify-between items-center"
+            transition={{ layout: { duration: 0.4, type: "spring" } }}
+          >
+            <div className="flex items-center gap-1.5 text-neutral-400">
+              <Settings2 className="w-4 h-4" />
+              <span className="text-sm font-semibold">{car.drivetrain}</span>
             </div>
-          </div>
-        </div>
-      </div>
+            <div className="flex items-center gap-1.5 text-neutral-500 text-sm font-bold uppercase tracking-wider">
+              <FlipHorizontal2 className="w-4 h-4" />
+              <span>{showStats ? "Hide" : "Stats"}</span>
+            </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
