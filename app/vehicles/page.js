@@ -84,21 +84,21 @@ const classColors = {
 
 const PageHeader = () => {
   return (
-    <div className="relative pt-32 pb-16 overflow-hidden border-b border-neutral-200 dark:border-neutral-900">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12rem] md:text-[18rem] font-black text-neutral-100 dark:text-neutral-900/40 pointer-events-none select-none z-0 whitespace-nowrap transition-colors duration-300">
+    <div className="relative pt-32 pb-16 overflow-hidden border-b border-neutral-900">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12rem] md:text-[18rem] font-black text-neutral-900/40 pointer-events-none select-none z-0 whitespace-nowrap transition-colors duration-300">
         車両一覧
       </div>
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p className="text-red-600 dark:text-red-500 font-bold tracking-[0.4em] mb-3 text-sm">
+        <p className="text-red-500 font-bold tracking-[0.4em] mb-3 text-sm">
           車両データベース
         </p>
-        <h1 className="text-4xl md:text-6xl font-black text-neutral-900 dark:text-white tracking-tighter uppercase mb-4">
+        <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-4">
           Vehicle{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">
             Database
           </span>
         </h1>
-        <p className="max-w-2xl mx-auto text-neutral-600 dark:text-neutral-400 text-lg">
+        <p className="max-w-2xl mx-auto text-neutral-400 text-lg">
           Explore the complete roster of cars available at the Japan Horizon
           Festival. Filter by class, manufacturer, or drivetrain to find your
           perfect ride.
@@ -158,7 +158,7 @@ const CarCard = ({ car }) => {
         >
           {/* ── FRONT FACE ── */}
           <div
-            className="bg-white dark:bg-neutral-900/40 rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 group hover:border-red-500/50 dark:hover:border-red-500/50 transition-colors duration-300 hover:shadow-xl hover:shadow-red-500/5 relative"
+            className="bg-neutral-900/40 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors duration-300 hover:shadow-xl hover:shadow-red-500/5 relative"
             style={{
               position: "absolute",
               inset: 0,
@@ -169,7 +169,7 @@ const CarCard = ({ car }) => {
             }}
           >
             {/* Background Watermark */}
-            <div className="absolute -right-4 -bottom-6 text-[6rem] font-black text-neutral-100 dark:text-neutral-800/30 group-hover:text-neutral-200 dark:group-hover:text-red-900/10 transition-colors pointer-events-none select-none z-0">
+            <div className="absolute -right-4 -bottom-6 text-[6rem] font-black text-neutral-800/30 group-hover:text-red-900/10 transition-colors pointer-events-none select-none z-0">
               {car.jpMake}
             </div>
 
@@ -198,27 +198,27 @@ const CarCard = ({ car }) => {
             <div className="p-6 relative z-10">
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <p className="text-red-600 dark:text-red-500 font-bold text-xs tracking-widest uppercase mb-1">
+                  <p className="text-red-500 font-bold text-xs tracking-widest uppercase mb-1">
                     {car.year} • {car.make}
                   </p>
-                  <h3 className="text-xl font-bold text-neutral-900 dark:text-white leading-tight">
+                  <h3 className="text-xl font-bold text-white leading-tight">
                     {car.model}
                   </h3>
                 </div>
-                <span className="text-neutral-400 dark:text-neutral-600 text-[10px] font-bold tracking-[0.2em]">
+                <span className="text-neutral-600 text-[10px] font-bold tracking-[0.2em]">
                   {car.jpMake}
                 </span>
               </div>
 
-              <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-6">
+              <p className="text-neutral-400 text-sm mb-6">
                 {car.type}
               </p>
 
               {/* Specs Footer */}
-              <div className="pt-4 border-t border-neutral-100 dark:border-neutral-800 flex justify-between items-center">
+              <div className="pt-4 border-t border-neutral-800 flex justify-between items-center">
                 <div className="flex gap-4">
                   <div
-                    className="flex items-center gap-1.5 text-neutral-600 dark:text-neutral-400"
+                    className="flex items-center gap-1.5 text-neutral-400"
                     title="Drivetrain"
                   >
                     <Settings2 className="w-4 h-4" />
@@ -228,7 +228,7 @@ const CarCard = ({ car }) => {
                   </div>
                 </div>
                 {/* Flip hint button */}
-                <div className="flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500 text-sm font-bold uppercase tracking-wider select-none">
+                <div className="flex items-center gap-1.5 text-neutral-500 text-sm font-bold uppercase tracking-wider select-none">
                   <FlipHorizontal2 className="w-4 h-4" />
                   Flip
                 </div>
@@ -238,7 +238,7 @@ const CarCard = ({ car }) => {
 
           {/* ── BACK FACE ── */}
           <div
-            className="bg-white dark:bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 relative flex flex-col"
+            className="bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-800 relative flex flex-col"
             style={{
               position: "absolute",
               inset: 0,
@@ -255,13 +255,13 @@ const CarCard = ({ car }) => {
               {/* Header */}
               <div className="flex items-start justify-between mb-5">
                 <div>
-                  <p className="text-red-600 dark:text-red-500 font-bold text-xs tracking-widest uppercase mb-0.5">
+                  <p className="text-red-500 font-bold text-xs tracking-widest uppercase mb-0.5">
                     {car.year} • {car.make}
                   </p>
-                  <h3 className="text-xl font-black text-neutral-900 dark:text-white leading-tight">
+                  <h3 className="text-xl font-black text-white leading-tight">
                     {car.model}
                   </h3>
-                  <p className="text-neutral-400 dark:text-neutral-500 text-xs font-bold tracking-[0.2em] mt-0.5">
+                  <p className="text-neutral-500 text-xs font-bold tracking-[0.2em] mt-0.5">
                     {car.jpMake}
                   </p>
                 </div>
@@ -274,24 +274,24 @@ const CarCard = ({ car }) => {
 
               {/* Quick specs */}
               <div className="grid grid-cols-2 gap-3 mb-5">
-                <div className="bg-neutral-100 dark:bg-neutral-950 p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 flex items-center gap-2">
+                <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex items-center gap-2">
                   <Settings2 className="w-4 h-4 text-neutral-400 shrink-0" />
                   <div>
                     <p className="text-[9px] text-neutral-500 uppercase tracking-wider font-bold">
                       Drivetrain
                     </p>
-                    <p className="font-bold text-sm text-neutral-900 dark:text-white">
+                    <p className="font-bold text-sm text-white">
                       {car.drivetrain}
                     </p>
                   </div>
                 </div>
-                <div className="bg-neutral-100 dark:bg-neutral-950 p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 flex items-center gap-2">
+                <div className="bg-neutral-950 p-3 rounded-xl border border-neutral-800 flex items-center gap-2">
                   <Gauge className="w-4 h-4 text-neutral-400 shrink-0" />
                   <div>
                     <p className="text-[9px] text-neutral-500 uppercase tracking-wider font-bold">
                       Category
                     </p>
-                    <p className="font-bold text-sm text-neutral-900 dark:text-white line-clamp-1">
+                    <p className="font-bold text-sm text-white line-clamp-1">
                       {car.type}
                     </p>
                   </div>
