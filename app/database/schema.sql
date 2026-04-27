@@ -111,36 +111,46 @@ CREATE TABLE IF NOT EXISTS manufacturers (
 CREATE TABLE IF NOT EXISTS cars (
     id                  INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    -- Identity
     manufacturer_id     INTEGER NOT NULL REFERENCES manufacturers(id) ON DELETE RESTRICT,
     model               TEXT    NOT NULL,
-    variant             TEXT,                -- e.g. 'GT', 'RS', 'Turbo S', '4S'
+    variant             TEXT,
     year                INTEGER NOT NULL,
-    full_name           TEXT GENERATED ALWAYS AS (
-                            CAST(year AS TEXT) || ' ' || model
-                        ) STORED,            -- convenience column
-    slug                TEXT    NOT NULL UNIQUE,
 
-    -- Classification
+    full_name           TEXT NOT NULL,
+
+    slug                TEXT GENERATED ALWAYS AS (
+                            lower(
+                                replace(
+                                    replace(
+                                        trim(full_name),
+                                        ' ',
+                                        '-'
+                                    ),
+                                    '--',
+                                    '-'
+                                )
+                            )
+                        ) STORED UNIQUE,
+
+    car_pi_id           INTEGER REFERENCES pi_classes(id) ON DELETE SET NULL,
     car_type_id         INTEGER REFERENCES car_types(id) ON DELETE SET NULL,
     division_id         INTEGER REFERENCES car_divisions(id) ON DELETE SET NULL,
+    is_dlc              INTEGER NOT NULL DEFAULT 0,
     expansion_id        INTEGER REFERENCES expansions(id) ON DELETE SET NULL,
-    is_dlc              INTEGER NOT NULL DEFAULT 0,  -- BOOLEAN
-    is_barn_find        INTEGER NOT NULL DEFAULT 0,
-    is_exclusive        INTEGER NOT NULL DEFAULT 0,  -- Forzathon / Auction House only
 
-    -- Powertrain layout (factory spec)
+    is_barn_find        INTEGER NOT NULL DEFAULT 0,
+    is_exclusive        INTEGER NOT NULL DEFAULT 0,
+
     drivetrain_id       INTEGER REFERENCES drivetrain_layouts(id) ON DELETE SET NULL,
     powertrain_type_id  INTEGER REFERENCES powertrain_types(id) ON DELETE SET NULL,
 
-    -- Media
     thumbnail_url       TEXT,
     image_url           TEXT,
 
-    -- Meta
     description         TEXT,
-    created_at          TEXT    NOT NULL DEFAULT (datetime('now')),
-    updated_at          TEXT    NOT NULL DEFAULT (datetime('now'))
+
+    created_at          TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at          TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE INDEX IF NOT EXISTS idx_cars_manufacturer ON cars(manufacturer_id);
