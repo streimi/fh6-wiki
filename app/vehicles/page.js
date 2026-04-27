@@ -86,7 +86,7 @@ const classColors = {
 const PageHeader = () => {
   return (
     <div className="relative pt-32 pb-16 overflow-hidden border-b border-neutral-900">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12rem] md:text-[18rem] font-black text-neutral-900/40 pointer-events-none select-none z-0 whitespace-nowrap transition-colors duration-300">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12rem] md:text-[18rem] font-black text-neutral-900/40 pointer-events-none select-none z-0 whitespace-nowrap transition-colors duration-200">
         車両一覧
       </div>
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -135,7 +135,7 @@ const CarCard = ({ car }) => {
     >
       <motion.div
         layout
-        className="bg-neutral-900/40 hover:bg-neutral-900/90 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors duration-300 hover:shadow-xl hover:shadow-red-500/5 relative"
+        className="bg-neutral-900/40 hover:bg-neutral-900/90 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors duration-200 hover:shadow-xl hover:shadow-red-500/5 relative"
       >
         {/* IMAGE */}
         <motion.div
@@ -395,7 +395,7 @@ export default function CarsApp() {
 
   return (
     <div className={isDarkMode ? "dark" : ""}>
-      <div className="bg-neutral-50 dark:bg-neutral-950 min-h-screen text-neutral-900 dark:text-neutral-50 font-sans overflow-x-hidden selection:bg-red-500 selection:text-white transition-colors duration-300 flex flex-col">
+      <div className="bg-neutral-50 dark:bg-neutral-950 min-h-screen text-neutral-900 dark:text-neutral-50 font-sans overflow-x-hidden selection:bg-red-500 selection:text-white transition-colors duration-200 flex flex-col">
         <main className="flex-grow">
           <PageHeader />
           <VehicleDatabase />

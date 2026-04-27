@@ -21,7 +21,7 @@ const HeroSection = () => {
                     alt="Background"
                     fill
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent z-10 transition-colors duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent z-10 transition-colors duration-200" />
                 <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/90 via-neutral-950/50 to-transparent z-10" />
             </div>
 
@@ -57,7 +57,7 @@ const HeroSection = () => {
 
                     {/* OLD STYLE: Vehicles button */}
                     <Link href="/vehicles">
-                        <button className="px-8 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-sm uppercase tracking-wider transition-all flex items-center gap-2 transform hover:-translate-y-1 active:scale-95 shadow-lg shadow-red-600/30 duration-300 cursor-pointer">
+                        <button className="px-8 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-sm uppercase tracking-wider transition-all flex items-center gap-2 transform hover:-translate-y-1 active:scale-95 shadow-lg shadow-red-600/30 duration-200 cursor-pointer">
                             Explore Vehicles <ArrowRight className="w-5 h-5" />
                         </button>
                     </Link>

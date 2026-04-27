@@ -119,7 +119,7 @@ const VehicleShowcase = () => {
 
   return (
     <div
-      className="bg-neutral-950 border-y border-neutral-900 py-24 relative overflow-hidden transition-colors duration-300"
+      className="bg-neutral-950 border-y border-neutral-900 py-24 relative overflow-hidden transition-colors duration-200"
       id="vehicles"
     >
       {/* Decorative Japanese pattern background placeholder */}
@@ -144,10 +144,10 @@ const VehicleShowcase = () => {
           {vehicles.map((car) => (
             <div
               key={car.id}
-              className="bg-neutral-900/50 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors duration-300 backdrop-blur-sm shadow-xl shadow-none"
+              className="bg-neutral-900/50 rounded-2xl overflow-hidden border border-neutral-800 group hover:border-red-500/50 transition-colors duration-200 backdrop-blur-sm shadow-xl shadow-none"
             >
               <div className="relative h-64 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent z-10 transition-colors duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 to-transparent z-10 transition-colors duration-200"></div>
                 <Image
                   src={car.image}
                   alt={car.model}
@@ -174,7 +174,7 @@ const VehicleShowcase = () => {
                 <p className="text-neutral-400 leading-relaxed mb-6">
                   {car.desc}
                 </p>
-                <button className="text-white font-semibold flex items-center gap-2 group-hover:text-red-400 transition-all duration-300">
+                <button className="text-white font-semibold flex items-center gap-2 group-hover:text-red-400 transition-all duration-200">
                   View Specs <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -243,7 +243,7 @@ const FeaturesGrid = () => {
         {features.map((feat, idx) => (
           <div
             key={idx}
-            className={`bg-neutral-900/50 border border-neutral-800 p-8 rounded-2xl transition-all duration-300 relative overflow-hidden group ${feat.borderHover} hover:bg-neutral-800/80 shadow-lg shadow-none`}
+            className={`bg-neutral-900/50 border border-neutral-800 p-8 rounded-2xl transition-all duration-200 relative overflow-hidden group ${feat.borderHover} hover:bg-neutral-800/80 shadow-lg shadow-none`}
           >
             {/* Big background Kanji */}
             <div className="absolute -right-6 -top-6 text-[8rem] font-black text-neutral-800/20 group-hover:text-neutral-700/30 transition-colors pointer-events-none select-none z-0">
@@ -280,7 +280,7 @@ const FeaturesGrid = () => {
 export default function App() {
   return (
     <div className="dark">
-      <div className="bg-neutral-950 min-h-screen text-neutral-50 font-sans overflow-x-hidden selection:bg-red-500 selection:text-white transition-colors duration-300">
+      <div className="bg-neutral-950 min-h-screen text-neutral-50 font-sans overflow-x-hidden selection:bg-red-500 selection:text-white transition-colors duration-200">
         <main>
           <HeroSection />
           <QuickStats />

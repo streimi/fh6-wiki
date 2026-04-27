@@ -79,7 +79,7 @@ const MAP_IMAGE_URL = "https://cdn.mapgenie.io/images/games/forza-horizon-5/prev
 
 const NavigationBar = ({ isDarkMode, toggleDarkMode, toggleSidebar, isSidebarOpen }) => {
   return (
-    <nav className="h-16 w-full z-[100] bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 shadow-sm transition-colors duration-300 flex-shrink-0">
+    <nav className="h-16 w-full z-[100] bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 shadow-sm transition-colors duration-200 flex-shrink-0">
       <div className="w-full h-full px-4 flex items-center justify-between">
         
         <div className="flex items-center gap-4">
@@ -160,7 +160,7 @@ const MapSidebar = ({
   return (
     <div className={`
       flex flex-col h-full bg-white dark:bg-neutral-950 border-r border-neutral-200 dark:border-neutral-800 
-      transition-all duration-300 ease-in-out absolute md:relative z-40
+      transition-all duration-200 ease-in-out absolute md:relative z-40
       ${isOpen ? 'w-80 translate-x-0' : 'w-80 -translate-x-full md:w-0 md:-translate-x-full'}
     `}>
       {/* Search Bar */}
@@ -398,7 +398,7 @@ const InteractiveMap = ({ markers, setMarkers, activeFilters, searchQuery }) => 
       <div className="absolute top-6 right-6 z-50 flex flex-col gap-4">
         
         {/* Editor Controls */}
-        <div className="bg-white/90 dark:bg-neutral-950/90 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-2xl overflow-hidden flex flex-col transition-colors duration-300">
+        <div className="bg-white/90 dark:bg-neutral-950/90 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-2xl overflow-hidden flex flex-col transition-colors duration-200">
           <button 
             onClick={() => setIsEditMode(!isEditMode)} 
             className={`p-3 flex items-center justify-center transition-colors border-b border-neutral-200 dark:border-neutral-800 ${isEditMode ? 'bg-red-600 text-white hover:bg-red-700' : 'text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-900'}`}
@@ -420,7 +420,7 @@ const InteractiveMap = ({ markers, setMarkers, activeFilters, searchQuery }) => 
         </div>
 
         {/* Zoom Controls */}
-        <div className="bg-white/90 dark:bg-neutral-950/90 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-2xl overflow-hidden flex flex-col transition-colors duration-300">
+        <div className="bg-white/90 dark:bg-neutral-950/90 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-2xl overflow-hidden flex flex-col transition-colors duration-200">
           <button onClick={handleZoomIn} className="p-3 text-neutral-700 dark:text-neutral-300 hover:text-red-600 dark:hover:text-red-500 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors border-b border-neutral-200 dark:border-neutral-800" title="Zoom In">
             <ZoomIn className="w-5 h-5" />
           </button>
@@ -587,7 +587,7 @@ export default function MapPageApp() {
   return (
     <div className={isDarkMode ? "dark" : ""}>
       {/* Root Layout: Fixed height to prevent whole-page scrolling, handle scrolling inside components */}
-      <div className="bg-white dark:bg-neutral-950 h-screen w-full text-neutral-900 dark:text-neutral-50 font-sans overflow-hidden selection:bg-red-500 selection:text-white transition-colors duration-300 flex flex-col">
+      <div className="bg-white dark:bg-neutral-950 h-screen w-full text-neutral-900 dark:text-neutral-50 font-sans overflow-hidden selection:bg-red-500 selection:text-white transition-colors duration-200 flex flex-col">
         
         <NavigationBar 
           isDarkMode={isDarkMode} 
